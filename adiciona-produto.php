@@ -1,23 +1,29 @@
-<?php include("cabecalho.php");
- 	  include ("conecta.php");
-      include("banco-produto.php");?>
+<?php include("cabecalho.php"); 
+ include("conecta.php"); 
+ include("banco-produto.php"); 
+ ?>
 
-<?php
-$nome = $_GET["nome"];
-$preço = $_GET["preco"];
+ <?php
+$nome = $_POST["nome"];
+$preco = $_POST["preco"];
+$descricao=$_POST["descricao"];
+$categoria_id=$_POST['categoria_id'];
 
-$conexao = mysqli_connect('localhost','root','','loja');
+if (array_key_exists('usado',$_POST)){
+	$usado= "true";
+} else {
+	$usado = "false";
+}
 
 
-if (insereProduto ($conexao,$nome,$preço)) { ?>
-<p class="text-success"> O Produto <?= $nome; ?>, <?= $preço; ?> adicionado com sucesso!</p>
+if(insereProduto($conexao, $nome, $preco, $descricao,$categoria_id,$usado)) { ?>
+    <p class="text-success">O produto <?= $nome; ?>, <?= $preco; ?> adicionado com sucesso!</p>
 <?php } else {
-	$msg = mysqli_error ($conexao);
+    $msg = mysqli_error($conexao);
 ?>
-<p class = "text-danger">O produto <?= $nome ?> não foi adicionado: <?= $msg ?> </p>
-
+    <p class="text-danger">O produto <?= $nome; ?> não foi adicionado: <?= $msg ?></p>
 <?php
-
 }
 ?>
+
 <?php include("rodape.php"); ?>
